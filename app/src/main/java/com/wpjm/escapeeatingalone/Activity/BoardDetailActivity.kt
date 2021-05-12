@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.wpjm.escapeeatingalone.Adapter.BoardDetailAdapter
@@ -43,8 +44,7 @@ class BoardDetailActivity : AppCompatActivity() {
         var boardTimeStamp = intent.getStringExtra("date")
 
         // 상단 board 정보
-        var profileNum: Int? = intent.getStringExtra("profile")?.toInt()
-//      binding.boardDetailImageViewProfile.setImageResource(profileNum!!)
+        Glide.with(binding.boardDetailImageViewProfile).load(intent.getStringExtra("profile").toString()).into(binding.boardDetailImageViewProfile)
         binding.boardDetailActivityTextviewWritername.text = intent.getStringExtra("writerName")
         binding.boardDetailTextViewTitle.text = intent.getStringExtra("title")
         binding.boardDetailTextViewContents.text = intent.getStringExtra("contents")
@@ -111,7 +111,7 @@ class BoardDetailActivity : AppCompatActivity() {
 
             // 댓글 내용, 게시글 타임스탬프
             var comment = binding.boardDetailActivityEdittextComment.getText().toString()
-            var commentModel = CommentModel(name, comment, timeStamp, boardTimeStamp)
+            var commentModel = CommentModel(name, comment, timeStamp, boardTimeStamp!!)
 
             db.collection("comments").document(timeStamp.toString()).set(commentModel)
                     .addOnSuccessListener { // 성공할 때

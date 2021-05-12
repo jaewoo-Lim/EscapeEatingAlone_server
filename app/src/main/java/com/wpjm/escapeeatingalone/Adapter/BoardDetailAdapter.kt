@@ -35,7 +35,6 @@ class BoardDetailAdapter(val BoardCommentList: ArrayList<CommentModel>) : Recycl
     }
 
     override fun onBindViewHolder(holder: BoardDetailAdapter.CustomViewHolder, position: Int) {
-    //    holder.profile.setImageResource(BoardCommentList.get(position).profile)
         holder.name.text = BoardCommentList.get(position).name
         holder.contents.text = BoardCommentList.get(position).contents
         holder.commentTimeStamp.text = BoardCommentList.get(position).timestamp
@@ -54,7 +53,6 @@ class BoardDetailAdapter(val BoardCommentList: ArrayList<CommentModel>) : Recycl
     }
 
     class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val profile =  itemView.findViewById<ImageView>(R.id.boardComment_image_profile) // 이미지
         val name = itemView.findViewById<TextView>(R.id.boardComment_textview_name) // 이름
         val contents = itemView.findViewById<TextView>(R.id.boardComment_textview_contents) // 내용
         val commentTimeStamp = itemView.findViewById<TextView>(R.id.boardComment_textview_timeStamp) // 날짜

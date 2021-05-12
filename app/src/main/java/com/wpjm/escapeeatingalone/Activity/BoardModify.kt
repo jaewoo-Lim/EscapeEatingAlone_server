@@ -8,7 +8,6 @@ import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.wpjm.escapeeatingalone.R
-import com.wpjm.escapeeatingalone.databinding.ActivityBoardMakeBinding
 import com.wpjm.escapeeatingalone.databinding.ActivityBoardModifyBinding
 
 class BoardModify : AppCompatActivity() {

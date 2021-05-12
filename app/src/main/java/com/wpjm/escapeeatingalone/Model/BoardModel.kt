@@ -1,14 +1,15 @@
 package com.wpjm.escapeeatingalone.Model
 
 class BoardModel{
-    var profile:Int = 0
-    var name: String = ""
-    var title: String = ""
-    var contents: String = ""
-    var date: String = ""
+    var profile:String? = null
+    var name: String? = null
+    var title: String? = null
+    var contents: String? = null
+    var date: String? = null
 
 
-    constructor(name: String, title:String, contents:String, date:String){
+    constructor(profile: String, name: String, title:String, contents:String, date:String){
+        this.profile = profile
         this.name = name
         this.title = title
         this.contents = contents

@@ -1,3 +1,3 @@
 package com.wpjm.escapeeatingalone.Model
 
-class ChatlistModel(/*val profile: Int,*/ val name: String, val person: String, val date: String)
+class ChatlistModel(var profile: Int, var title: String, var storeName: String, var date: String, var chatroomId: String)

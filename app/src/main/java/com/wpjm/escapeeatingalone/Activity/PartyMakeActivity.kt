@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.wpjm.escapeeatingalone.Model.ChatroomModel
 import com.wpjm.escapeeatingalone.Model.MessageModel
 import com.wpjm.escapeeatingalone.Model.PartyModel
 import com.wpjm.escapeeatingalone.Model.PersonModel
@@ -49,7 +50,8 @@ class PartyMakeActivity : AppCompatActivity() {
                 }
 
         // 가게 이름
-        var storeName = intent.getStringExtra("storeName")
+        var storeName = intent.getStringExtra("storeName").toString()
+
 
        val countList = arrayOf("2","3","4")
         val countAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, countList)
@@ -69,10 +71,14 @@ class PartyMakeActivity : AppCompatActivity() {
                                            storeName!!,
                                            timeStamp)
 
+               // party 만들기
                db.collection("party").document(timeStamp).set(partyModel)
                        .addOnSuccessListener {
                             Toast.makeText(this, "등록 성공", Toast.LENGTH_SHORT).show()
-                            MakeMessage(name)
+                            MakeMessage(name,
+                                        binding.partyMakeEdittextTitle.getText().toString(),
+                                        storeName,
+                                        binding.partyMakeEdittextDate.getText().toString())
                        }
                        .addOnFailureListener {
                            Toast.makeText(this, "등록 실패", Toast.LENGTH_SHORT).show()
@@ -88,7 +94,7 @@ class PartyMakeActivity : AppCompatActivity() {
 
     // chatromms의 message에 생성하기
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun MakeMessage(name: String) {
+    private fun MakeMessage(name: String, title: String, storeName: String, date: String) {
         var messageModel = MessageModel(name, "${name}님 입장하였습니다", timeStamp)
 
         db.collection("chatrooms").document(timeStamp)
@@ -96,7 +102,7 @@ class PartyMakeActivity : AppCompatActivity() {
                 .set(messageModel)
                 .addOnSuccessListener {
                     Toast.makeText(this, "채팅방 생성 성공", Toast.LENGTH_SHORT).show()
-                    MakeUser(name, timeStamp)
+                    MakeUser(name, title, storeName, date, timeStamp)
                     var intent = Intent(this, MessageActivity::class.java)
                     intent.putExtra("chatroomId", timeStamp)
                     startActivity(intent)
@@ -107,17 +113,18 @@ class PartyMakeActivity : AppCompatActivity() {
     }
 
     // chatromms의 users에 생성하기
-    private fun MakeUser(name: String, timeStamp: String) {
-        var personModel = PersonModel(name)
+    private fun MakeUser(name: String, title: String, storeName: String, date: String, timeStamp: String) {
+        var chatroomModel = ChatroomModel(mutableListOf(name), title, storeName, date, timeStamp)
+
         db.collection("chatrooms").document(timeStamp)
-                .collection("users").document(user!!.getUid())
-                .set(personModel)
+                .set(chatroomModel)
                 .addOnSuccessListener {
                     Toast.makeText(this, "채팅방 유저 생성 성공", Toast.LENGTH_SHORT).show()
                 }
                 .addOnFailureListener {
                     Toast.makeText(this, "채팅방 유저 생성 실패", Toast.LENGTH_SHORT).show()
                 }
+
     }
 
     // Intent function

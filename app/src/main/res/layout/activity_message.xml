@@ -76,13 +76,45 @@
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/userView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/navi_user"
         tools:layout_editor_absoluteX="131dp" >
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chat_pesonList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+        />
+
+        <LinearLayout
+            android:id="@+id/layout_navi"
+            android:gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/exit_chat"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom"
+                android:text="방 나가기"
+
+                />
+
+
+        </LinearLayout>
+
+
+
+
+
+
+
+
 
     </com.google.android.material.navigation.NavigationView>
 

@@ -29,9 +29,11 @@ class BoardMake : AppCompatActivity() {
         setContentView(binding.root)
 
         var name = ""
+        var imageUrl = ""
         db.collection("users").document(user!!.getUid()).get()
                 .addOnSuccessListener { result ->
                     name=result["name"] as String
+                    imageUrl=result["profileImageUrl"] as String
                 }
 
         val current = LocalDateTime.now()
@@ -41,24 +43,24 @@ class BoardMake : AppCompatActivity() {
         // 확인버튼을 눌렀을 때
         binding.boardMakeButtonOk.setOnClickListener(View.OnClickListener {
             if (binding.boardMakeEdittextTitle.getText().toString().length > 0 &&
-                binding.boardMakeEdittextContents.getText().toString().length > 0
+                    binding.boardMakeEdittextContents.getText().toString().length > 0
             ) {
-
                 var boardModel = BoardModel(
-                    name!!,
-                    binding.boardMakeEdittextTitle.getText().toString(),
-                    binding.boardMakeEdittextContents.getText().toString(),
-                    timeStamp.toString()
+                        imageUrl!!,
+                        name!!,
+                        binding.boardMakeEdittextTitle.getText().toString(),
+                        binding.boardMakeEdittextContents.getText().toString(),
+                        timeStamp.toString()
                 )
 
                 db.collection("board").document(timeStamp.toString()).set(boardModel)
-                    .addOnSuccessListener { // 성공할 때
-                        Toast.makeText(this, "업로드 성공", Toast.LENGTH_SHORT).show()
-                        gotoActivity(BoardActivity::class.java)
-                    }
-                    .addOnFailureListener { // 실패할 때
-                        Toast.makeText(this, "업로드 실패", Toast.LENGTH_SHORT).show()
-                    }
+                        .addOnSuccessListener { // 성공할 때
+                            Toast.makeText(this, "업로드 성공", Toast.LENGTH_SHORT).show()
+                            gotoActivity(BoardActivity::class.java)
+                        }
+                        .addOnFailureListener { // 실패할 때
+                            Toast.makeText(this, "업로드 실패", Toast.LENGTH_SHORT).show()
+                        }
             } else {
                 Toast.makeText(this, "제목과 내용을 입력해주세요", Toast.LENGTH_SHORT).show()
             }

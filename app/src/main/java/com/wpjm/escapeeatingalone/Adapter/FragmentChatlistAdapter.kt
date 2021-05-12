@@ -1,43 +1,24 @@
 package com.wpjm.escapeeatingalone.Adapter
 
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.wpjm.escapeeatingalone.Activity.MessageActivity
 import com.wpjm.escapeeatingalone.Model.ChatlistModel
-import com.wpjm.escapeeatingalone.Model.PersonModel
 import com.wpjm.escapeeatingalone.R
 import com.wpjm.escapeeatingalone.databinding.FragmentPersonBinding
 
 class FragmentChatlistAdapter(val ChatList:ArrayList<ChatlistModel>) : RecyclerView.Adapter<FragmentChatlistAdapter.CustomViewHolder>() {
-    private var db = FirebaseFirestore.getInstance()
-    private val user = FirebaseAuth.getInstance().currentUser
     var firestore : FirebaseFirestore? = null
     private var mBinding: FragmentPersonBinding? = null
     private val binding get() = mBinding!!
-
-    init {
-        db.collection("store")
-                .get()
-                .addOnSuccessListener { result ->
-                    ChatList.clear()
-                    for (document in result) {
-                        val item = ChatlistModel(document["name"] as String, document["person"] as String, document["date"] as String)
-                        ChatList.add(item)
-
-
-                    }
-                    notifyDataSetChanged() // 리사이클러뷰 갱신
-                }
-                .addOnFailureListener { exception ->
-                    Log.e("no data", "$exception")
-                }
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FragmentChatlistAdapter.CustomViewHolder {
         // item을 붙이기
@@ -49,18 +30,25 @@ class FragmentChatlistAdapter(val ChatList:ArrayList<ChatlistModel>) : RecyclerV
         return ChatList.size
     }
     override fun onBindViewHolder(holder: FragmentChatlistAdapter.CustomViewHolder, position: Int) {
-
-
-        /*holder.profile.setImageResource(ChatList.get(position).profile)*/
-        holder.name.text = ChatList.get(position).name
-        holder.person.text = ChatList.get(position).person
+        holder.profile.setImageResource(ChatList.get(position).profile)
+        holder.title.text = ChatList.get(position).title
+        holder.storeName.text = ChatList.get(position).storeName
         holder.date.text = ChatList.get(position).date
+        var chatroomId = ChatList.get(position).chatroomId
+
+        // 리스트 눌렀을 때
+        holder.itemView.setOnClickListener{
+            var intent = Intent(holder.itemView?.context, MessageActivity::class.java)
+            intent.putExtra("chatroomId", chatroomId)
+            intent.putExtra("messageTitle", ChatList.get(position).title)
+            ContextCompat.startActivity(holder.itemView.context, intent, null)
+        }
     }
 
     class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        /*val profile =  itemView.findViewById<ImageView>(R.id.fragmentchatlist_image_profile) // 이미지*/
-        val name = itemView.findViewById<TextView>(R.id.fragmentchatlist_textview_name) // 이름
-        val person = itemView.findViewById<TextView>(R.id.fragmentchatlist_textview_person) // 숫가락 점수
-        val date = itemView.findViewById<TextView>(R.id.fragmentchatlist_textview_date) // 숫가락 점수
+        val profile = itemView.findViewById<ImageView>(R.id.fragmentchatlist_image_profile) // 이미지
+        val title = itemView.findViewById<TextView>(R.id.fragmentchatlist_textview_title) // 제목
+        val storeName = itemView.findViewById<TextView>(R.id.fragmentchatlist_textview_storeName) // 가게이름
+        val date = itemView.findViewById<TextView>(R.id.fragmentchatlist_textview_date) // 날짜
     }
 }

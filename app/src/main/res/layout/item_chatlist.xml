@@ -34,45 +34,44 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
-            android:id="@+id/fragmentchatlist_textview_name"
+            android:id="@+id/fragmentchatlist_textview_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="4dp"
-            android:text="우진먹"
+            android:text="제목"
+            android:textAllCaps="false"
             android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/fragmentchatlist_image_profile"
             app:layout_constraintTop_toTopOf="@+id/fragmentchatlist_image_profile" />
 
         <TextView
-            android:id="@+id/fragmentchatlist_textview_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="280dp"
-            android:layout_marginLeft="280dp"
-            android:layout_marginEnd="18dp"
-            android:layout_marginRight="18dp"
-            android:layout_marginBottom="35dp"
-            android:text="11/11"
-            android:textColor="#000000"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/fragmentchatlist_image_profile"
-            app:layout_constraintTop_toTopOf="@+id/fragmentchatlist_textview_name" />
-
-        <TextView
-            android:id="@+id/fragmentchatlist_textview_person"
+            android:id="@+id/fragmentchatlist_textview_storeName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginBottom="8dp"
-            android:text="숫가락 점수"
-            android:textColor="#000000"
+            android:text="가게이름"
+            android:textColor="#5A5A5A"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/fragmentchatlist_image_profile" />
+
+        <TextView
+            android:id="@+id/fragmentchatlist_textview_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="18dp"
+            android:layout_marginRight="18dp"
+            android:text="11/11"
+            android:textColor="#000000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

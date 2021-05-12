@@ -6,22 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".ChatlistFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/fragmentchat_recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
     <TextView
-        android:id="@+id/fragmentchat_textvew_chat"
-        android:layout_width="wrap_content"
+        android:id="@+id/fragmentchat_textview_chatting"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="172dp"
-        android:layout_marginLeft="172dp"
-        android:layout_marginTop="354dp"
-        android:layout_marginEnd="181dp"
-        android:layout_marginRight="181dp"
+        android:text="채팅"
+        android:textSize="30sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragmentchat_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragmentchat_textview_chatting"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

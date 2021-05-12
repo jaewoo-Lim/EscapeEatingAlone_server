@@ -7,7 +7,9 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.wpjm.escapeeatingalone.Model.ChatroomModel
 import com.wpjm.escapeeatingalone.Model.PersonModel
 import com.wpjm.escapeeatingalone.R
 import com.wpjm.escapeeatingalone.databinding.ActivityPartyDetailBinding
@@ -31,11 +33,14 @@ class PartyDetailActivity : AppCompatActivity() {
                     name = result["name"] as String
                 }
 
-        // 채팅방 id
-        var chatroomId = intent.getStringExtra("timeStamp").toString()
-        
         // 메시지 제목
         var messageTitle = intent.getStringExtra("title").toString()
+        // 가게 이름
+        var storeName = intent.getStringExtra("storeName").toString()
+        // 채팅방 id
+        var chatroomId = intent.getStringExtra("timeStamp").toString()
+
+
 
         binding.partyDetailActivityEdittextStoreName.setText(intent.getStringExtra("storeName").toString())
         binding.partyDetailActivityEdittextTitle.setText(intent.getStringExtra("title").toString())
@@ -47,7 +52,7 @@ class PartyDetailActivity : AppCompatActivity() {
         binding.partyDetailActivityButtonCheck.setOnClickListener(View.OnClickListener {
             // chatrooms의 users에 해당 id가 없다면
             // chatrooms의 users숫자가 count보다 작으면
-            MakeUser(name, chatroomId)
+            MakeUser(name, messageTitle, storeName, chatroomId)
             var intent = Intent(this, MessageActivity::class.java)
             intent.putExtra("chatroomId", chatroomId)
             intent.putExtra("messageTitle", messageTitle)
@@ -55,17 +60,22 @@ class PartyDetailActivity : AppCompatActivity() {
         })
     }
 
-    private fun MakeUser(name: String, chatroomId: String) {
-        var personModel = PersonModel(name)
-        db.collection("chatrooms").document(chatroomId)
-                .collection("users").document(user!!.getUid())
-                .set(personModel)
-                .addOnSuccessListener {
-                    Toast.makeText(this, "채팅방 유저 생성 성공", Toast.LENGTH_SHORT).show()
+    private fun MakeUser(name: String, title: String, storeName: String, chatroomId: String) {
+        var chatrooms = db.collection("chatrooms")
+        chatrooms.get().addOnSuccessListener { documents ->
+            for (document in documents) { 
+                var uList = document["users"] as MutableList<String>
+                
+                if(user!!.getUid() in uList){ // uList안에 user의 uid가 존재하면
+                    Toast.makeText(this, "이미 존재하는 회원입니다", Toast.LENGTH_SHORT).show()
+                    Log.d("partyDetail", "이미 존재하는 회원입니다")
                 }
-                .addOnFailureListener {
-                    Toast.makeText(this, "채팅방 유저 생성 실패", Toast.LENGTH_SHORT).show()
+                else{ // uList안에 user의 uid가 존재하지않으면
+                    uList.add(name)
+                    chatrooms.document(chatroomId).update(mapOf("users" to uList))
                 }
+            }
+        }
     }
 
     private fun gotoActivity(c: Class<*>) {

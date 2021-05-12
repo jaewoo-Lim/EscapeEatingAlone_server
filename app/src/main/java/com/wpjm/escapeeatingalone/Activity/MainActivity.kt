@@ -10,7 +10,6 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.core.view.get
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -54,14 +53,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                                         name=result["name"] as String
                                         imageUrl=result["profileImageUrl"] as String
                                         binding.naviView.menu.findItem(R.id.profile).setTitle(name)
-                                        //binding.naviView.menu.findItem(R.id.profile).
-                                        //Glide.with(this).load(imageUrl).into()
-
                                     }
-
-                            // cloud firestore로부터 이름 읽어오기
-                            Log.e("name", "${document.data}")
-                            //  binding.mainActivityTextviewName.setText(document.id)
                         } else { // 개인정보가 존재하지 않으면
                             gotoActivity(MemberInitActivity::class.java)
                         }
@@ -104,8 +96,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     // Intent function
     private fun gotoActivity(c: Class<*>) {
-        var intent9 = Intent(this, c)
-        startActivity(intent9)
+        var intent = Intent(this, c)
+        startActivity(intent)
 
     }
 

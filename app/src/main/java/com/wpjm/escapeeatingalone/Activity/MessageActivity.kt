@@ -55,7 +55,7 @@ class MessageActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
 
         // 현재시간
         val current = LocalDateTime.now()
-        val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초 SSSg")
+        val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초 SSS")
         val timeStamp = current.format(formatter)
 //        val messageCurrent = LocalDateTime.now()
 //        val mcTimeStamp = messageCurrent.format(formatter)

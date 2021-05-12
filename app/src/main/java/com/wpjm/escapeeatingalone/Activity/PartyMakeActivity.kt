@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.google.firebase.auth.FirebaseAuth
@@ -48,6 +50,10 @@ class PartyMakeActivity : AppCompatActivity() {
 
         // 가게 이름
         var storeName = intent.getStringExtra("storeName")
+
+       val countList = arrayOf("2","3","4")
+        val countAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, countList)
+        //spinner.adapter = countAdapter
 
         // 생성하기 버튼 누르면
         binding.partyMakeButtonComplete.setOnClickListener(View.OnClickListener {

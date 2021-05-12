@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.wpjm.escapeeatingalone.Adapter.BoardDetailAdapter
+import com.wpjm.escapeeatingalone.Model.BoardDetailModel
 import com.wpjm.escapeeatingalone.Model.CommentModel
 import com.wpjm.escapeeatingalone.R
 import com.wpjm.escapeeatingalone.databinding.ActivityBoardDetailBinding
@@ -37,11 +38,6 @@ class BoardDetailActivity : AppCompatActivity() {
                 .addOnSuccessListener { result ->
                     name = result["name"] as String
                 }
-
-        // 현재시간
-        val current = LocalDateTime.now()
-        val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초 SSS")
-        val timeStamp = current.format(formatter)
 
         // 게시글 타임스탬프
         var boardTimeStamp = intent.getStringExtra("date")
@@ -108,6 +104,11 @@ class BoardDetailActivity : AppCompatActivity() {
         // 전송 버튼 눌렀을 때
         binding.boardDetailActivityButtonSend.setOnClickListener ( View.OnClickListener {
 
+            // 현재시간
+            val current = LocalDateTime.now()
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+            val timeStamp = current.format(formatter)
+
             // 댓글 내용, 게시글 타임스탬프
             var comment = binding.boardDetailActivityEdittextComment.getText().toString()
             var commentModel = CommentModel(name, comment, timeStamp, boardTimeStamp)
@@ -134,4 +135,5 @@ class BoardDetailActivity : AppCompatActivity() {
         var intent = Intent(this, c)
         startActivity(intent)
     }
+
 }

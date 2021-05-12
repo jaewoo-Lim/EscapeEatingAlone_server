@@ -72,4 +72,9 @@ class PartyDetailActivity : AppCompatActivity() {
         var intent = Intent(this, c)
         startActivity(intent)
     }
+
+//    private fun CountUser() {
+//        var countNumber = binding.partyDetailActivityEdittextCount.setText(intent.getStringExtra("count").toString())
+//        if(countNumber > 0 &&
+//    }
 }

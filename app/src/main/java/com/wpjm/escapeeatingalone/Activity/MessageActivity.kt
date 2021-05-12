@@ -3,6 +3,7 @@ package com.wpjm.escapeeatingalone.Activity
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.Adapter
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -47,8 +48,10 @@ class MessageActivity : AppCompatActivity() {
 
         // 현재시간
         val current = LocalDateTime.now()
-        val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초 SSS")
+        val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초")
         val timeStamp = current.format(formatter)
+//        val messageCurrent = LocalDateTime.now()
+//        val mcTimeStamp = messageCurrent.format(formatter)
 
         // fireStore chatrooms 에서 읽어오기
         var messageList = arrayListOf<MessageModel>()

@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         // 가게명으로 찾기 눌렀을 때
         binding.mainActivityButtonFindname.setOnClickListener(View.OnClickListener {
-            gotoActivity(MapNaverActivity::class.java)
+            gotoActivity(MapGoogleActivity::class.java)
         })
 
         // 자유게시판 눌렀을 때

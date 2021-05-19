@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.wpjm.escapeeatingalone">
+
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -24,11 +25,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
-        <activity android:name=".Activity.PartyDetailActivity"></activity>
-        <activity android:name=".Activity.PartyMakeActivity" />
-        <activity android:name=".Activity.BoardModify" />
-        <activity android:name=".Activity.PartyActivity" />
-        <activity android:name=".Activity.MenuDetailActivity" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"
@@ -36,6 +35,17 @@
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="yidtar3sb3" />
+
+        <activity
+            android:name=".Activity.MapGoogleActivity"
+            android:label="@string/title_activity_map_google"></activity>
+
+        <activity android:name=".Activity.DeleteFirendActivity"></activity>
+        <activity android:name=".Activity.PartyDetailActivity" />
+        <activity android:name=".Activity.PartyMakeActivity" />
+        <activity android:name=".Activity.BoardModify" />
+        <activity android:name=".Activity.PartyActivity" />
+        <activity android:name=".Activity.MenuDetailActivity" />
 
         <activity android:name=".Activity.BoardMake" />
         <activity android:name=".Activity.MapNaverActivity" />

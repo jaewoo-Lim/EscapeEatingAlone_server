@@ -41,6 +41,7 @@ class BoardMake : AppCompatActivity() {
         val timeStamp = current.format(formatter)
 
         // 확인버튼을 눌렀을 때
+
         binding.boardMakeButtonOk.setOnClickListener(View.OnClickListener {
             if (binding.boardMakeEdittextTitle.getText().toString().length > 0 &&
                     binding.boardMakeEdittextContents.getText().toString().length > 0

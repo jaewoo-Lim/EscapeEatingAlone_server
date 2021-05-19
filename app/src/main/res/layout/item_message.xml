@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/messageItem_imageView_profile"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -18,7 +18,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/android" />
+        app:srcCompat="@drawable/user" />
 
     <TextView
         android:id="@+id/messageItem_textview_name"

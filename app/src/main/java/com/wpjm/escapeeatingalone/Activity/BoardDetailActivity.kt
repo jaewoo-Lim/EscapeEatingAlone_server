@@ -13,7 +13,6 @@ import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.wpjm.escapeeatingalone.Adapter.BoardDetailAdapter
-import com.wpjm.escapeeatingalone.Model.BoardDetailModel
 import com.wpjm.escapeeatingalone.Model.CommentModel
 import com.wpjm.escapeeatingalone.R
 import com.wpjm.escapeeatingalone.databinding.ActivityBoardDetailBinding
@@ -25,7 +24,7 @@ class BoardDetailActivity : AppCompatActivity() {
     private val binding get() = mBinding!!
     private val user = FirebaseAuth.getInstance().currentUser
     private var db = FirebaseFirestore.getInstance()
-    private var name=""
+    private var name = ""
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,11 +39,18 @@ class BoardDetailActivity : AppCompatActivity() {
                     name = result["name"] as String
                 }
 
+        // 현재시간
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초 SSS")
+        val timeStamp = current.format(formatter)
+
         // 게시글 타임스탬프
         var boardTimeStamp = intent.getStringExtra("date")
 
         // 상단 board 정보
-        Glide.with(binding.boardDetailImageViewProfile).load(intent.getStringExtra("profile").toString()).into(binding.boardDetailImageViewProfile)
+        Glide.with(binding.boardDetailImageViewProfile)
+                .load(intent.getStringExtra("profile").toString())
+                .into(binding.boardDetailImageViewProfile)
         binding.boardDetailActivityTextviewWritername.text = intent.getStringExtra("writerName")
         binding.boardDetailTextViewTitle.text = intent.getStringExtra("title")
         binding.boardDetailTextViewContents.text = intent.getStringExtra("contents")
@@ -52,7 +58,7 @@ class BoardDetailActivity : AppCompatActivity() {
 
         // 수정 삭제 보기
         var userName = intent.getStringExtra("userName")
-        if(intent.getStringExtra("writerName") == userName){
+        if (intent.getStringExtra("writerName") == userName) {
             binding.boardDetailButtonModify.visibility = View.VISIBLE
             binding.boardDetailButtonDelete.visibility = View.VISIBLE
         }
@@ -80,45 +86,40 @@ class BoardDetailActivity : AppCompatActivity() {
 
         db.collection("comments")
                 .whereEqualTo("boardTimeStamp", "${boardTimeStamp}")
-                .addSnapshotListener{ result, e ->
+                .addSnapshotListener { result, e ->
                     if (e != null) {
                         Log.e("error", e.toString())
                         return@addSnapshotListener
                     }
                     commentList.clear()
 
-
-                    for (doc in result!!.documentChanges) {
-                            for (document in result) {
-                                val item = CommentModel(
-                                                document["name"] as String,
-                                                document["contents"] as String,
-                                                document["timestamp"] as String,
-                                                document["boardTimeStamp"] as String
-                                )
-                                commentList.add(item)
-
-                            }
-                        commentList = arrayListOf()
-                        adapter.notifyDataSetChanged() // 리사이클러뷰 갱신
+                    for (document in result!!) {
+                        val item = CommentModel(
+                                document["name"] as String,
+                                document["contents"] as String,
+                                document["timestamp"] as String,
+                                document["boardTimeStamp"] as String
+                        )
+                        commentList.add(item)
                     }
+                    adapter.notifyDataSetChanged() // 리사이클러뷰 갱신
 
                 }
 
-
         // 전송 버튼 눌렀을 때
-        binding.boardDetailActivityButtonSend.setOnClickListener ( View.OnClickListener {
+        binding.boardDetailActivityButtonSend.setOnClickListener(View.OnClickListener {
 
-            // 현재시간
-            val current = LocalDateTime.now()
-            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-            val timeStamp = current.format(formatter)
+            // 버튼 누를때 현재시간
+            val btn_current = LocalDateTime.now()
+            val btn_formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초 SSS")
+            val btn_timeStamp = btn_current.format(btn_formatter)
 
             // 댓글 내용, 게시글 타임스탬프
             var comment = binding.boardDetailActivityEdittextComment.getText().toString()
-            var commentModel = CommentModel(name, comment, timeStamp, boardTimeStamp!!)
+            var commentModel = CommentModel(name, comment, btn_timeStamp, boardTimeStamp!!)
 
-            db.collection("comments").document(timeStamp.toString()).set(commentModel)
+            db.collection("comments").document(btn_timeStamp)
+                    .set(commentModel)
                     .addOnSuccessListener { // 성공할 때
                         binding.boardDetailActivityEdittextComment.setText(null)
                         Toast.makeText(this, "업로드 성공", Toast.LENGTH_SHORT).show()
@@ -128,17 +129,17 @@ class BoardDetailActivity : AppCompatActivity() {
                     }
         })
 
-        binding.boardDetailActivityRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.boardDetailActivityRecyclerView.layoutManager =
+                LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.boardDetailActivityRecyclerView.setHasFixedSize(true)
 
         binding.boardDetailActivityRecyclerView.adapter = adapter
     }
-    
+
 
     // Intent function
     private fun gotoActivity(c: Class<*>) {
         var intent = Intent(this, c)
         startActivity(intent)
     }
-
 }

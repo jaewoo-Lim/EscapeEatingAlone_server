@@ -52,11 +52,28 @@ class PartyDetailActivity : AppCompatActivity() {
         binding.partyDetailActivityButtonCheck.setOnClickListener(View.OnClickListener {
             // chatrooms의 users에 해당 id가 없다면
             // chatrooms의 users숫자가 count보다 작으면
-            MakeUser(name, messageTitle, storeName, chatroomId)
-            var intent = Intent(this, MessageActivity::class.java)
-            intent.putExtra("chatroomId", chatroomId)
-            intent.putExtra("messageTitle", messageTitle)
-            startActivity(intent)
+            var chatroomCount:Number = 0
+            var maxCount:Number = 0
+            db.collection("chatrooms").document(chatroomId).get()
+                .addOnSuccessListener { result ->
+                    chatroomCount = result!!["count"] as Number
+
+                    db.collection("party").document(chatroomId).get()
+                        .addOnSuccessListener { result ->
+                            maxCount = result!!["count"] as Number
+
+                            if (chatroomCount.toInt() < maxCount.toInt()){
+                                MakeUser(name, messageTitle, storeName, chatroomId)
+                                var intent = Intent(this, MessageActivity::class.java)
+                                intent.putExtra("chatroomId", chatroomId)
+                                intent.putExtra("messageTitle", messageTitle)
+                                startActivity(intent)
+                            } else {
+                                Toast.makeText(this, "입장 인원 초과", Toast.LENGTH_SHORT).show()
+                                Log.e("입장 인원 초과", "입장 인원 초과")
+                            }
+                        }
+                }
         })
     }
 

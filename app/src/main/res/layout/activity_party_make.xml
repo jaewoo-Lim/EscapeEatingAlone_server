@@ -25,21 +25,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/partyMake_button_calendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_btn_white"
+        android:text="날짜 입력"
+        android:textColor="#888686"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/partyMake_edittext_title" />
+
     <EditText
         android:id="@+id/partyMake_edittext_date"
         android:layout_width="0dp"
         android:layout_height="48dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
         android:background="@drawable/rounded_edittext_register_login"
         android:hint="먹방날짜"
+        android:inputType="date"
         android:outlineAmbientShadowColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.511"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/partyMake_button_calendar"
         app:layout_constraintTop_toBottomOf="@+id/partyMake_edittext_title" />
 
     <EditText
@@ -51,6 +64,7 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/rounded_edittext_register_login"
         android:hint="인원수"
+        android:inputType="number"
         android:outlineAmbientShadowColor="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/partyMake_edittext_date" />

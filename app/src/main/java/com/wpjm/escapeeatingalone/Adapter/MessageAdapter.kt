@@ -3,9 +3,11 @@ package com.wpjm.escapeeatingalone.Adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.wpjm.escapeeatingalone.Model.MessageModel
@@ -21,7 +23,6 @@ class MessageAdapter(val MessageList: ArrayList<MessageModel>) : RecyclerView.Ad
         db.collection("users").document(user!!.getUid()).get()
                 .addOnSuccessListener { result ->
                     userName = result["name"] as String }
-        db.collection("chatrooms").document()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageAdapter.CustomViewHolder {
@@ -37,7 +38,12 @@ class MessageAdapter(val MessageList: ArrayList<MessageModel>) : RecyclerView.Ad
     }
 
     override fun onBindViewHolder(holder: MessageAdapter.CustomViewHolder, position: Int) {
-//        holder.profile.setImageResource(MessageList.get(position).profile)
+
+        if(MessageList.get(position).profile == "") {
+            holder.profile.setImageResource(R.drawable.android)
+        }
+        Glide.with(holder.itemView.context).load(MessageList.get(position).profile).into(holder.profile)
+
         holder.name.text = MessageList.get(position).name
         holder.contents.text = MessageList.get(position).contents
         holder.timeStamp.text = MessageList.get(position).timeStamp
@@ -51,7 +57,7 @@ class MessageAdapter(val MessageList: ArrayList<MessageModel>) : RecyclerView.Ad
 
     class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var messageLayout = itemView.findViewById<ConstraintLayout>(R.id.messageItem_layout)
-//        var profile = itemView.findViewById<ImageView>(R.id.messageItem_imageView_profile)
+        var profile = itemView.findViewById<ImageView>(R.id.messageItem_imageView_profile)
         var name = itemView.findViewById<TextView>(R.id.messageItem_textview_name)
         var contents = itemView.findViewById<TextView>(R.id.messageItem_textview_contents)
         var timeStamp = itemView.findViewById<TextView>(R.id.messageItem_textView_timeStamp)

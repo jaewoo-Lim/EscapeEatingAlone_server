@@ -3,6 +3,7 @@ package com.wpjm.escapeeatingalone.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
@@ -34,25 +35,32 @@ class MessageActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
         mBinding = ActivityMessageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 이름
+        // 이름, 프로필 이미지
         var name = ""
+        var imageUrl = ""
         db.collection("users").document(user!!.getUid()).get()
-                .addOnSuccessListener { result ->
-                    name = result["name"] as String
-                }
-
-        // 제목
-        var messageTitle = intent.getStringExtra("messageTitle")
-        binding.messageActivityEdittextTitle.setText(messageTitle)
-
+            .addOnSuccessListener { result ->
+                name=result["name"] as String
+                imageUrl=result["profileImageUrl"] as String
+            }
 
         // 채팅룸 id
         var chatrommId = intent.getStringExtra("chatroomId").toString()
 
-        // 현재시간
-        val current = LocalDateTime.now()
-        val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초 SSS")
-        val timeStamp = current.format(formatter)
+        // 인원수
+        db.collection("chatrooms").document(chatrommId)
+            .addSnapshotListener { result, e ->
+                if (e != null) {
+                    Log.e("error", e.toString())
+                    return@addSnapshotListener
+                }
+                var chatroomCount = result!!["count"] as Number
+
+                // 제목
+                var messageTitle = intent.getStringExtra("messageTitle")
+                binding.messageActivityEdittextTitle.setText("${messageTitle}(${chatroomCount})")
+            }
+
 
         // fireStore chatrooms 에서 읽어오기
         val chatRef = db.collection("chatrooms").document(chatrommId)
@@ -71,7 +79,7 @@ class MessageActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
                     }
                     messageList.clear()
                     for (document in result!!) {
-                        val item = MessageModel(document["name"] as String, document["contents"] as String, document["timeStamp"] as String)
+                        val item = MessageModel(document["profile"] as String, document["name"] as String, document["contents"] as String, document["timeStamp"] as String)
                         messageList.add(item)
                     }
                     adapter.notifyDataSetChanged() // 리사이클러뷰 갱신
@@ -91,9 +99,9 @@ class MessageActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
                         for (name in uList) {
                             personList.add(name)
                         }
-                        Log.e("chatroomCount", uList.count().toString())
+                        chatRef.update("count", uList.count())
                     } else {
-                        Log.d("MessageActivity", "참가자없음")
+                        Log.e("MessageActivity", "참가자없음")
                     }
                     padaper.notifyDataSetChanged()
                 }
@@ -104,10 +112,16 @@ class MessageActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
         binding.messageActivityRecyclerView.setHasFixedSize(true)
         binding.messageActivityRecyclerView.adapter = adapter
 
+        // messageActivity_button_gotoMessageList 눌렀을 때
+        binding.messageActivityButtonGotoMessageList.setOnClickListener {
+            gotoActivity(ChatActivity::class.java)
+        }
+
         // 네비게이션 버튼 눌렀을 때
         binding.messageActivityButtonUserNavi.setOnClickListener {
             binding.layoutDrawer2.openDrawer(GravityCompat.START)
         }
+
         binding.userView.setNavigationItemSelectedListener(this)
         binding.exitChat.setOnClickListener {
             chatRef.get()
@@ -120,9 +134,12 @@ class MessageActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
                             if (uList.isEmpty()) {
                                 chatRef.delete()
                             }
-                            chatRef.update("users", uList)
+                            chatRef.update(mapOf("count" to uList.count()-1, "users" to uList)
+                            )
                         } else {
-                            Log.d("MessageActivity", "참가자없음")
+                            // chatrooms 삭제하기
+                            chatRef.delete()
+                            Log.e("MessageActivity", "참가자없음")
                         }
                         finish()
                         gotoActivity(ChatActivity::class.java)
@@ -131,11 +148,16 @@ class MessageActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
 
         // 전송 버튼을 눌렀을 때
         binding.messageActivityButtonSend.setOnClickListener {
+            // 버튼 눌렀을 때 현재시간
+            val btn_current = LocalDateTime.now()
+            val btn_formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초 SSS")
+            val btn_timeStamp = btn_current.format(btn_formatter)
+
             var message = binding.messageActivityEdittextMessage.getText().toString()
-            var messageModel = MessageModel(name, message, timeStamp)
+            var messageModel = MessageModel(imageUrl, name, message, btn_timeStamp)
 
             db.collection("chatrooms").document(chatrommId)
-                    .collection("message").document(timeStamp)
+                    .collection("message").document(btn_timeStamp)
                     .set(messageModel)
                     .addOnSuccessListener {
                         binding.messageActivityEdittextMessage.setText(null)

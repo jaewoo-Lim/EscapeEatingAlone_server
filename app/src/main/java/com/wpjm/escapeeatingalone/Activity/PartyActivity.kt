@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.FirebaseFirestore
 import com.wpjm.escapeeatingalone.Model.PartyModel
 import com.wpjm.escapeeatingalone.R
-import com.wpjm.escapeeatingalone.databinding.ActivityMenuDetailBinding
 import com.wpjm.escapeeatingalone.databinding.ActivityPartyBinding
 
 class PartyActivity : AppCompatActivity() {
@@ -38,7 +37,7 @@ class PartyActivity : AppCompatActivity() {
                         val item = PartyModel(
                                 document["title"] as String,
                                 document["date"] as String,
-                                document["count"] as String,
+                                document["count"] as Number,
                                 document["contents"] as String,
                                 document["storeName"] as String,
                                 document["timeStamp"] as String

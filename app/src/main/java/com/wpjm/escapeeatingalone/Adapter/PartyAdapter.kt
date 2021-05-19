@@ -26,7 +26,7 @@ class PartyAdapter(val partyList: ArrayList<PartyModel>) :RecyclerView.Adapter<P
     override fun onBindViewHolder(holder: PartyAdapter.CustomViewHolder, position: Int) {
         holder.date.text = partyList.get(position).date
         holder.title.text = partyList.get(position).title
-        holder.count.text = partyList.get(position).count
+        holder.count.text = partyList.get(position).count.toString()
         holder.storeName.text = partyList.get(position).storeName
         holder.timeStamp.text = partyList.get(position).timeStamp
 

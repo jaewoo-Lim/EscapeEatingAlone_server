@@ -87,6 +87,7 @@ class BoardDetailActivity : AppCompatActivity() {
                     }
                     commentList.clear()
 
+
                     for (doc in result!!.documentChanges) {
                             for (document in result) {
                                 val item = CommentModel(
@@ -96,10 +97,14 @@ class BoardDetailActivity : AppCompatActivity() {
                                                 document["boardTimeStamp"] as String
                                 )
                                 commentList.add(item)
+
                             }
+                        commentList = arrayListOf()
                         adapter.notifyDataSetChanged() // 리사이클러뷰 갱신
                     }
+
                 }
+
 
         // 전송 버튼 눌렀을 때
         binding.boardDetailActivityButtonSend.setOnClickListener ( View.OnClickListener {

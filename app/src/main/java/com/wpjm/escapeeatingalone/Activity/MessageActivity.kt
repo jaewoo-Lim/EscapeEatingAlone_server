@@ -4,11 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-<<<<<<< HEAD
-import android.widget.Adapter
-=======
 import android.view.MenuItem
->>>>>>> aa6867368406d1d7a89be474cd5e30b0c34af026
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -57,8 +53,6 @@ class MessageActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초 SSS")
         val timeStamp = current.format(formatter)
-//        val messageCurrent = LocalDateTime.now()
-//        val mcTimeStamp = messageCurrent.format(formatter)
 
         // fireStore chatrooms 에서 읽어오기
         val chatRef = db.collection("chatrooms").document(chatrommId)
@@ -166,4 +160,3 @@ class MessageActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
 
     }
 }
-
